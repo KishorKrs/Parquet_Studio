@@ -1,0 +1,99 @@
+:root {
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --bg-tertiary: #252525;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --accent-color: #3b82f6;
+  /* Blue-500 equivalent */
+  --accent-hover: #2563eb;
+  --border-color: #333333;
+  --success-color: #10b981;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  overflow: hidden;
+  /* App usually handles scrolling internally */
+  user-select: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+button.primary {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+button.primary:hover {
+  background-color: var(--accent-hover);
+}
+
+button.secondary {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+button.secondary:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--text-secondary);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* React Data Grid overrides for dark theme */
+.rdg {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border: none !important;
+  font-size: 13px;
+  --rdg-color: var(--text-primary);
+  --rdg-border-color: var(--border-color);
+  --rdg-summary-border-color: var(--border-color);
+  --rdg-background-color: var(--bg-primary);
+  --rdg-header-background-color: var(--bg-secondary);
+  --rdg-row-hover-background-color: var(--bg-tertiary);
+  --rdg-selection-color: #3b82f6;
+  block-size: 100%;
+}
+
+.rdg-cell {
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.rdg-header-row {
+  background-color: var(--bg-secondary);
+  font-weight: 600;
+}

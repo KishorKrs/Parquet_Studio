@@ -1,0 +1,140 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--bg-primary);
+}
+
+.toolbar {
+  height: 60px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  flex-shrink: 0;
+  -webkit-app-region: drag;
+  /* Allow dragging window by toolbar */
+}
+
+.toolbar button {
+  -webkit-app-region: no-drag;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  margin-right: 40px;
+  color: var(--text-primary);
+}
+
+.logo-icon {
+  font-size: 24px;
+  margin-right: 8px;
+  color: var(--accent-color);
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.separator {
+  width: 1px;
+  height: 24px;
+  background-color: var(--border-color);
+  margin: 0 8px;
+}
+
+.error-banner {
+  background-color: #ef4444;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  padding: 0;
+}
+
+.grid-area {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary);
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.statusbar {
+  height: 30px;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  gap: 20px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-item .label {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.status-item .value {
+  color: var(--text-primary);
+}
+
+/* Customizing the grid */
+.rdg-premium {
+  font-family: 'Inter', sans-serif;
+  /* Setup font properly */
+}
+
+.rdg-cell {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.cell-content {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
