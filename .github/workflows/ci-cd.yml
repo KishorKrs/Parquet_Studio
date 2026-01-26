@@ -29,4 +29,13 @@ jobs:
         run: npm ci
 
       - name: Build distribution
-        run: npm run dist
+        run: npm run dist -- --publish=never
+
+      - name: Upload installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: parquet-studio-${{ matrix.os }}
+          path: |
+            dist_electron/**/*.dmg
+            dist_electron/**/*.exe
+            dist_electron/**/*.AppImage 
