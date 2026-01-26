@@ -22,6 +22,26 @@
   -webkit-app-region: no-drag;
 }
 
+button.danger {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+button.danger:hover:not(:disabled) {
+  background-color: #dc2626;
+}
+
+button.danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .logo-section {
   display: flex;
   align-items: center;
@@ -137,4 +157,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
+}
+
+.sn-cell {
+  color: var(--text-secondary);
+  font-size: 11px;
+  width: 100%;
+  text-align: center;
 }

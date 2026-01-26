@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DataGrid, renderTextEditor } from 'react-data-grid';
+import { DataGrid, renderTextEditor, SelectColumn } from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
 import { tableFromIPC, tableToIPC, Table, vectorFromArray } from 'apache-arrow';
 import * as XLSX from 'xlsx';
@@ -15,6 +15,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [wasmReady, setWasmReady] = useState(false);
+  const [selectedRows, setSelectedRows] = useState(new Set());
 
   useEffect(() => {
     const init = async () => {
@@ -45,18 +46,28 @@ function App() {
       const arrowTable = tableFromIPC(wasmTable.intoIPCStream());
 
       // Map columns
-      const cols = arrowTable.schema.fields.map(f => ({
-        key: f.name,
-        name: f.name,
-        editable: true,
-        renderEditCell: renderTextEditor,
-        resizable: true,
-        // Basic render to ensure objects/dates show up
-        renderCell: (props) => {
-          const val = props.row[f.name];
-          return <div className="cell-content">{val !== null && val !== undefined ? String(val) : ''}</div>;
-        }
-      }));
+      const cols = [
+        SelectColumn,
+        {
+          key: 'sn',
+          name: 'SN',
+          width: 60,
+          frozen: true,
+          renderCell: (props) => <div className="sn-cell">{props.rowIdx + 1}</div>
+        },
+        ...arrowTable.schema.fields.map(f => ({
+          key: f.name,
+          name: f.name,
+          editable: true,
+          renderEditCell: renderTextEditor,
+          resizable: true,
+          // Basic render to ensure objects/dates show up
+          renderCell: (props) => {
+            const val = props.row[f.name];
+            return <div className="cell-content">{val !== null && val !== undefined ? String(val) : ''}</div>;
+          }
+        }))
+      ];
       setColumns(cols);
 
       // Map rows
@@ -87,6 +98,9 @@ function App() {
 
       const vectors = {};
       columns.forEach(col => {
+        // Skip internal columns like SN and SelectColumn
+        if (col.key === 'sn' || col.key === '__rdg_select__') return;
+
         const values = rows.map(r => {
           const val = r[col.key];
           // Convert empty strings back to null if needed, or keep as string
@@ -146,6 +160,13 @@ function App() {
     }
   };
 
+  const handleDeleteRows = () => {
+    if (selectedRows.size === 0) return;
+    const newRows = rows.filter((_, idx) => !selectedRows.has(idx));
+    setRows(newRows);
+    setSelectedRows(new Set());
+  };
+
   return (
     <div className="app-container">
       <header className="toolbar">
@@ -159,6 +180,9 @@ function App() {
           </button>
           <button className="secondary" onClick={handleSave} disabled={loading || rows.length === 0}>
             Save
+          </button>
+          <button className="danger" onClick={handleDeleteRows} disabled={selectedRows.size === 0}>
+            Delete selected ({selectedRows.size})
           </button>
           <div className="separator"></div>
           <button className="secondary" onClick={() => handleExport('csv')} disabled={rows.length === 0}>CSV</button>
@@ -181,6 +205,8 @@ function App() {
             className="rdg-premium"
             style={{ height: '100%', border: 'none' }}
             rowKeyGetter={(row) => rows.indexOf(row)} // Simple index key
+            selectedRows={selectedRows}
+            onSelectedRowsChange={setSelectedRows}
           />
         ) : (
           <div className="empty-state">
