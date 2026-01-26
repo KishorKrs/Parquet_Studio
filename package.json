@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "main": "electron/main.cjs",
-  "author": "Antigravity",
+  "author": "Kishor Sharma",
+  "license": "MIT",
   "description": "Cross-platform Parquet file editor",
   "scripts": {
     "dev": "vite",

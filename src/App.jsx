@@ -49,7 +49,7 @@ function App() {
       const cols = [
         SelectColumn,
         {
-          key: 'sn',
+          key: '__internal_sn__',
           name: 'SN',
           width: 60,
           frozen: true,
@@ -99,7 +99,7 @@ function App() {
       const vectors = {};
       columns.forEach(col => {
         // Skip internal columns like SN and SelectColumn
-        if (col.key === 'sn' || col.key === '__rdg_select__') return;
+        if (col.key === '__internal_sn__' || col.key === '__rdg_select__') return;
 
         const values = rows.map(r => {
           const val = r[col.key];
@@ -171,7 +171,7 @@ function App() {
     <div className="app-container">
       <header className="toolbar">
         <div className="logo-section">
-          <span className="logo-icon">❖</span>
+          <img src="/logo.png" alt="Parquet Studio Logo" className="logo-image" />
           <h1 className="logo-text">Parquet Studio</h1>
         </div>
         <div className="actions">

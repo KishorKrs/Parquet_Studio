@@ -49,10 +49,11 @@ button.danger:disabled {
   color: var(--text-primary);
 }
 
-.logo-icon {
-  font-size: 24px;
-  margin-right: 8px;
-  color: var(--accent-color);
+.logo-image {
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+  object-fit: contain;
 }
 
 .logo-text {

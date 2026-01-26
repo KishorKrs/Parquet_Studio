@@ -10,12 +10,10 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
       contextIsolation: true,
-      sandbox: false // Required for some Node APIs if we were using them directly, but we use contextBridge.
+      sandbox: false
     },
-    titleBarStyle: 'hiddenInset', // Mac style, looks good on Windows too sometimes or just standard
-    // On Windows, generic title bar is usually better unless custom.
-    // Let's stick to standard for now or 'hidden' if we build custom titlebar.
-    // For "Premium" look, maybe hidden is better, but let's start standard to ensure drag behavior works.
+    titleBarStyle: 'hiddenInset',
+    icon: path.join(__dirname, '../build/icon.png')
   });
 
   const isDev = !app.isPackaged;
