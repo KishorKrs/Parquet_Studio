@@ -30,15 +30,11 @@ function App() {
     init();
   }, []);
 
-  const handleOpenFile = async () => {
-    if (!wasmReady) return;
+  const loadParquetFile = async (path) => {
     try {
-      setError(null);
-      const path = await window.electronAPI.openFile();
-      if (!path) return;
-
       setLoading(true);
-      setFilepath(path);
+      setError(null);
+
       const buffer = await window.electronAPI.readFile(path);
 
       // Parse Parquet
@@ -58,6 +54,7 @@ function App() {
         ...arrowTable.schema.fields.map(f => ({
           key: f.name,
           name: f.name,
+          arrowType: f.type,
           editable: true,
           renderEditCell: renderTextEditor,
           resizable: true,
@@ -75,11 +72,39 @@ function App() {
       // .toJSON() converts generic arrow objects to JS objects.
       const data = arrowTable.toArray().map(row => row.toJSON());
       setRows(data);
+      setFilepath(path);
+      localStorage.setItem('lastFilepath', path);
     } catch (err) {
       console.error(err);
-      setError("Failed to open file: " + err.message);
+      setError(`Failed to open file: ${err.message}`);
+      // If loading failed (e.g. file unavailable), clear from storage so we don't loop
+      if (path === localStorage.getItem('lastFilepath')) {
+        localStorage.removeItem('lastFilepath');
+      }
     } finally {
       setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (wasmReady) {
+      const lastFile = localStorage.getItem('lastFilepath');
+      if (lastFile) {
+        loadParquetFile(lastFile);
+      }
+    }
+  }, [wasmReady]);
+
+  const handleOpenFile = async () => {
+    if (!wasmReady) return;
+    try {
+      setError(null);
+      const path = await window.electronAPI.openFile();
+      if (!path) return;
+      await loadParquetFile(path);
+    } catch (err) {
+      // Error already handled in loadParquetFile or before calling it
+      console.error("File dialog error", err);
     }
   };
 
@@ -106,7 +131,7 @@ function App() {
           // Convert empty strings back to null if needed, or keep as string
           return val === undefined ? null : val;
         });
-        vectors[col.key] = vectorFromArray(values);
+        vectors[col.key] = vectorFromArray(values, col.arrowType);
       });
 
       const table = new Table(vectors);
